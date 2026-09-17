@@ -1,4 +1,5 @@
 import { IMAGES } from './media'
+import CompanyProfileDialog from './CompanyProfileDialog'
 
 type Img = { src: string; width: number; height: number; alt: string }
 
@@ -744,6 +745,9 @@ export function SiteFooter() {
           <a href="mailto:Payel@futeservices.com">Payel@futeservices.com</a>
         </div>
         <div className="markets">India / Singapore / UAE · Dubai / Australia</div>
+      </div>
+      <div className="footer-profile">
+        <CompanyProfileDialog />
       </div>
     </footer>
   )

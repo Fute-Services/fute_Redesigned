@@ -33,4 +33,5 @@
 .nav-brand img{display:block;width:auto;height:40px;transition:height .35s ease}
 .nav.is-scrolled .nav-brand img{height:31px}
 .footer-mark{display:block;width:auto;height:44px;margin-bottom:16px}
+.footer-profile{margin-top:17px}
 @media(max-width:760px){.nav-brand img,.nav.is-scrolled .nav-brand img{height:30px}.footer-mark{height:36px}}
