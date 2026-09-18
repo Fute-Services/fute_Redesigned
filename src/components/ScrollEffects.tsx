@@ -1,5 +1,3 @@
-'use client'
-
 import { useEffect } from 'react'
 
 /* Scroll-led reveals and the fine-pointer cursor aura — both reduced-motion safe. */

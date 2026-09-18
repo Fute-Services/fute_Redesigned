@@ -1,5 +1,3 @@
-'use client'
-
 import { useAgent } from './AgentProvider'
 
 const CHOICES = [

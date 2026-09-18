@@ -22,7 +22,7 @@ import {
   Voice,
 } from '@/components/sections'
 
-export default function Home() {
+export default function App() {
   return (
     <AgentProvider>
       <main className="site">

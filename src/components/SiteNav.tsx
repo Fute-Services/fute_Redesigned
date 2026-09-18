@@ -1,5 +1,3 @@
-'use client'
-
 import { useEffect, useState } from 'react'
 
 const LINKS = [
@@ -24,7 +22,6 @@ export default function SiteNav() {
   return (
     <header className={scrolled ? 'nav is-scrolled' : 'nav'}>
       <a className="nav-brand" href="#top" aria-label="FUTÉ 2.0 home">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/logo.png" width={504} height={161} alt="FUTÉ services" />
       </a>
       <nav className="nav-links" aria-label="Primary navigation">

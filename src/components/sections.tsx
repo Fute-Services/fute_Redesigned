@@ -4,7 +4,6 @@ import CompanyProfileDialog from './CompanyProfileDialog'
 type Img = { src: string; width: number; height: number; alt: string }
 
 /* Plain <img> keeps the original object-fit/filter compositions pixel-exact. */
-/* eslint-disable @next/next/no-img-element */
 function Picture({ image, ...rest }: { image: Img } & React.ImgHTMLAttributes<HTMLImageElement>) {
   return <img src={image.src} width={image.width} height={image.height} alt={image.alt} {...rest} />
 }
