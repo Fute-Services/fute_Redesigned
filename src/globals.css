@@ -35,3 +35,178 @@
 .footer-mark{display:block;width:auto;height:44px;margin-bottom:16px}
 .footer-profile{margin-top:17px}
 @media(max-width:760px){.nav-brand img,.nav.is-scrolled .nav-brand img{height:30px}.footer-mark{height:36px}}
+
+/* Responsive foundations — no sideways scroll, fluid media, a real mobile menu. */
+html{-webkit-text-size-adjust:100%}
+body{overflow-x:hidden}
+img{max-width:100%}
+.nav-toggle,.nav-links-contact{display:none}
+
+/* Tablet landscape — the editorial rhythm keeps its shape, the gutters give way. */
+@media(max-width:1180px){
+.hero{padding:120px 26px 34px}
+.hero-mosaic{gap:11px}
+.hero-mosaic figure{height:206px}
+.hero-mosaic figure:nth-child(3){height:262px}
+.hero-mosaic figure:nth-child(4){height:174px}
+.hero-mosaic .mosaic-red{height:158px}
+.intro,.experience,.capabilities,.showcase,.film-reel,.lifecycle,.interactive,.systems,.delivery,.voice,.perspective,.clients,.case,.footer,.human-idea,.future-triad,.buyer-signal,.ai-panel{padding-left:26px;padding-right:26px}
+.intro-grid,.experience-inner,.case-inner,.lifecycle-grid,.interactive-grid,.systems-head,.voice-grid,.perspective-grid,.perspective-line,.human-footer,.film-reel-head,.future-triad{gap:5vw}
+.triad-cell{min-height:296px}
+.system{padding-right:24px}
+.system:nth-child(odd){margin-right:24px}
+.agent-glass:before{width:255px;height:255px}
+}
+
+/* Tablet portrait — two-column editorial spreads unstack, four-up rows halve. */
+@media(max-width:1024px){
+.hero{height:auto;min-height:0;padding:118px 26px 38px}
+.hero h1{font-size:clamp(58px,9vw,96px)}
+.hero-mosaic{position:static;width:100%;margin-top:46px;transform:none;grid-template-columns:1fr 1fr;gap:12px}
+.hero-mosaic figure,.hero-mosaic figure:nth-child(3),.hero-mosaic figure:nth-child(4),.hero-mosaic .mosaic-red{height:228px}
+.hero-mosaic figure:nth-child(4){display:block}
+.hero-scroll{display:none}
+.intro-grid,.experience-inner,.case-inner,.lifecycle-grid,.interactive-grid,.systems-head,.voice-grid,.perspective-grid,.perspective-line,.human-footer,.human-layout,.film-reel-head,.delivery-head,.cap-head,.showcase-title,.clients-head,.agent-stage,.future-triad,.buyer-signal,.ai{display:block}
+.intro-copy,.lifecycle-lead,.systems-lead,.perspective-copy,.interactive-lead,.signal-copy>p:last-child,.triad-intro>p:last-child{margin-top:38px}
+.cap-head p,.showcase-title p,.clients-head p,.delivery-head p,.film-reel-head>p,.perspective-line p{margin-top:24px;max-width:none}
+.case blockquote{margin-top:38px}
+.facts,.treatment,.path,.delivery-steps,.global-markets,.market-pulse{grid-template-columns:1fr 1fr}
+.fact,.delivery-step{border-bottom:1px solid var(--rule)}
+.beat{border-bottom:1px solid #bcb4a9}
+.path div{border-bottom:1px solid rgba(241,238,232,.58)}
+.fact:nth-child(2n),.beat:nth-child(2n),.path div:nth-child(2n),.delivery-step:nth-child(2n){border-right:0}
+.market-pulse{gap:0}
+.market-pulse span{padding:13px 0;border-bottom:1px solid var(--rule)}
+.market-pulse b{grid-column:1/3;padding-top:20px}
+.global-markets span:nth-child(even){padding-left:16px}
+.global-markets span:nth-child(3),.global-markets span:nth-child(4){border-top:1px solid var(--rule)}
+.work-grid{grid-template-columns:1fr}
+.project-major{min-height:520px}
+.project-stack{margin-top:18px;grid-template-rows:none;grid-template-columns:1fr 1fr}
+.project-small{min-height:300px}
+.film-grid{grid-template-columns:1fr 1fr}
+.film-card,.film-card.tall{min-height:340px}
+.film-card.tall{grid-column:1/-1;min-height:380px}
+.human-layout{min-height:0;padding-top:52px}
+.human-orbit{width:min(330px,74%);margin:46px auto 4px}
+.human-footer span{display:block;margin-top:24px}
+.buyer-signal{min-height:0;padding:96px 26px}
+.signal-copy{max-width:none;justify-self:auto}
+.signal-wheel{width:min(430px,78vw);margin:56px auto 0}
+.triad-intro{max-width:none;justify-self:auto}
+.triad-cells{margin-top:46px}
+.triad-cell{min-height:250px}
+.ai-panel{padding-top:92px;padding-bottom:92px}
+.ai-image{min-height:420px}
+.agent-stage{margin-top:56px}
+.agent-stage-note{margin-top:18px}
+.system-grid{grid-template-columns:1fr}
+.system{min-height:0;padding-right:0}
+.system:nth-child(odd){border-right:0;margin-right:0}
+.client-field{padding-left:0}
+.client-signal{position:relative;left:auto;top:auto;margin:0 0 42px}
+.client-signal b{left:120px;bottom:14px;width:180px}
+.logo-sheets{grid-template-columns:1fr}
+.logo-sheets figure+figure{margin-top:18px}
+.clients .logo-sheets figure:first-child,.clients .logo-sheets figure:last-child{transform:none}
+.footer{min-height:0}
+}
+
+/* The primary rail folds into a panel — the links must survive the fold. */
+@media(max-width:900px){
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 22px}
+.nav-brand,.nav-toggle{position:relative;z-index:2}
+.nav-contact{display:none}
+.nav-toggle{display:grid;align-content:center;gap:6px;width:44px;height:44px;margin-right:-11px;padding:0;border:0;background:transparent;color:inherit;cursor:pointer}
+.nav-toggle span{display:block;width:25px;height:2px;background:currentColor;transition:transform .3s cubic-bezier(.2,.7,.15,1),opacity .3s ease}
+.nav.is-open{position:fixed;z-index:50;height:66px;background:var(--paper);box-shadow:none}
+.nav.is-open .nav-toggle span:first-child{transform:translateY(4px) rotate(45deg)}
+.nav.is-open .nav-toggle span:last-child{transform:translateY(-4px) rotate(-45deg)}
+.nav-links{position:fixed;z-index:1;inset:0;width:100%;justify-self:stretch;display:flex;flex-direction:column;justify-content:center;gap:0;padding:86px 22px calc(34px + env(safe-area-inset-bottom));background:var(--paper);color:var(--ink);opacity:0;visibility:hidden;transform:translateY(-12px);transition:opacity .3s ease,transform .35s cubic-bezier(.2,.7,.15,1),visibility .35s}
+.nav.is-open .nav-links{opacity:1;visibility:visible;transform:none}
+.nav-links a{padding:16px 0;border-bottom:1px solid rgba(21,21,19,.16);font-family:var(--serif);font-size:clamp(26px,6.6vw,38px);font-weight:400;letter-spacing:-.045em;text-transform:none}
+.nav-links-contact{display:block;color:var(--red);border-bottom:0}
+}
+
+/* Phone — single column throughout, and the decorative grids finally give in. */
+@media(max-width:760px){
+.hero{padding:112px 20px 30px}
+.hero-mosaic{margin-top:40px}
+.hero-mosaic figure,.hero-mosaic figure:nth-child(3),.hero-mosaic figure:nth-child(4),.hero-mosaic .mosaic-red{height:158px}
+.hero-mosaic figure:nth-child(4){display:block}
+.project-stack{grid-template-columns:1fr;gap:16px}
+.film-grid{grid-template-columns:1fr}
+.film-card.tall{grid-column:auto}
+.triad-cells{grid-template-columns:1fr}
+.triad-cell{min-height:190px}
+.journey-row{grid-template-columns:52px 1fr;gap:12px}
+.question{grid-template-columns:46px 1fr;gap:12px}
+.question p{max-width:none}
+.cap-arrow{grid-column:3;grid-row:1}
+.global-network{overflow:visible}
+.global-network svg{width:100%;margin-left:0}
+.network-label text{font-size:30px;letter-spacing:1px}
+.network-label text:nth-child(1){transform:translateX(4px)}
+.network-label text:nth-child(3){transform:translate(-40px,-26px)}
+.network-label text:nth-child(4){transform:translate(-92px,34px)}
+.agent-choices button,.agent-dialog-options button{min-height:40px}
+.agent-launch{right:14px;bottom:calc(14px + env(safe-area-inset-bottom))}
+.footer-bottom{padding-top:20px}
+.emails a{padding:3px 0}
+}
+
+/* Small phones — the display type and the reserved block heights come down. */
+@media(max-width:560px){
+.hero{padding:104px 18px 26px}
+.hero h1{font-size:clamp(43px,12.4vw,56px)}
+.hero-note{max-width:none}
+.hero-mosaic{grid-template-columns:1fr 1fr;gap:8px}
+.hero-mosaic figure,.hero-mosaic figure:nth-child(3),.hero-mosaic figure:nth-child(4),.hero-mosaic .mosaic-red{height:132px}
+.intro,.experience,.case,.film-reel,.human-idea,.future-triad,.buyer-signal,.ai-panel,.lifecycle,.interactive,.systems,.delivery,.voice,.perspective,.clients,.capabilities,.showcase,.footer{padding-left:18px;padding-right:18px}
+.facts,.treatment,.path,.delivery-steps,.global-markets{grid-template-columns:1fr}
+.fact,.beat,.path div,.delivery-step{margin-right:0;padding-right:0;border-right:0;min-height:0;padding-bottom:20px}
+.fact:last-child,.beat:last-child,.path div:last-child,.delivery-step:last-child{border-bottom:0}
+.beat p,.system p,.interactive-lead,.lifecycle-lead,.systems-lead,.perspective-copy,.intro-copy{max-width:none}
+.global-markets span:nth-child(even){padding-left:0}
+.global-markets span+span{border-left:0;border-top:1px solid var(--rule);padding-left:0}
+.market-pulse{grid-template-columns:1fr}
+.market-pulse b{grid-column:auto}
+.cap{grid-template-columns:26px 1fr 18px;gap:10px}
+.project-major{min-height:340px}
+.project-small{min-height:240px}
+.film-card,.film-card.tall{min-height:270px}
+.film-treatment{inset:auto 12px 12px 12px;padding:13px}
+.agent-glass{min-height:0;padding:16px}
+.agent-orb{width:88px;height:88px;margin:34px auto 18px}
+.agent-glass:before{width:190px;height:190px}
+.agent-dialog{width:calc(100vw - 20px)}
+.agent-dialog-glass{padding:19px}
+.agent-dialog h2{font-size:clamp(38px,11vw,50px)}
+.agent-dialog-intro{max-width:none;font-size:21px}
+.client-signal{margin-bottom:26px}
+.client-signal b{position:static;width:auto;display:block;margin-top:14px}
+.client-rail span{padding:12px 14px;font-size:16px}
+.footer h2{margin-top:48px}
+.footer-head{display:block;line-height:1.7}
+.footer-head span{display:block}
+.human-orbit{width:88%}
+.signal-wheel{width:min(320px,86vw)}
+.wheel-item{font-size:8px;letter-spacing:.06em}
+}
+
+/* Touch and coarse pointers — no hover theatre, every control stays thumb-sized. */
+@media(hover:none){
+.cursor-aura{display:none}
+.cap:hover,.system:hover,.voice-item:hover,.film-card:hover,.triad-cell:hover,.clients .logo-sheets figure:hover,.buyer-signal:hover .signal-copy,.agent-launch:hover,.agent-choices button:hover{transform:none}
+.film-card summary:hover img{transform:none;filter:brightness(.7) saturate(.72)}
+.hero-mosaic figure:not(.mosaic-red):hover img{transform:none;filter:saturate(.78) contrast(.96)}
+.cap:hover,.system:hover,.voice-item:hover{background-color:transparent}
+}
+@media(pointer:coarse){
+.nav-links a,.emails a,.button,.agent-close,.voice-toggle,.voiceover-toggle{min-height:44px}
+.button{padding:15px 20px;display:inline-flex;align-items:center}
+.agent-choices button,.agent-dialog-options button{min-height:42px}
+}
+@media(pointer:coarse) and (min-width:901px){
+.nav-contact{display:inline-flex;align-items:center;min-height:44px}
+}
