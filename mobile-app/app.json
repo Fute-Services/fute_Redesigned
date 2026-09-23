@@ -8,7 +8,8 @@
     "userInterfaceStyle": "dark",
     "backgroundColor": "#151513",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.int8.fute.fute20"
     },
     "android": {
       "adaptiveIcon": {
@@ -20,6 +21,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2485350e-2e54-467f-a69a-08d5562d79ac"
+      }
+    },
+    "owner": "fute"
   }
 }
