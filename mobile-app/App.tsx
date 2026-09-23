@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Image,
   ImageBackground,
@@ -7,6 +8,7 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -130,6 +132,45 @@ const COLLABORATORS = [
   'Embassy Group',
 ];
 
+const AGENT_ANSWERS: Record<string, string> = {
+  location: 'Begin with context. Explore the location through the life it makes possible.',
+  spaces: 'Move into what matters: approved spaces, plans and options.',
+  next: 'Compare with clarity. Prepare the next useful sales conversation.',
+};
+
+const AGENT_CHOICES = [
+  ['location', 'Why this place?'],
+  ['spaces', 'What suits me?'],
+  ['next', 'What next?'],
+] as const;
+
+const TABS = ['Home', 'Explore', 'Agent'] as const;
+type Tab = (typeof TABS)[number];
+
+function Tag({ children, style }: { children: string; style?: object }) {
+  return <Text style={[styles.tag, style]}>{children}</Text>;
+}
+
+function TopBar({ label }: { label: string }) {
+  return (
+    <View style={styles.topBar}>
+      <View style={styles.topBarLeft}>
+        <View style={styles.topBarDot} />
+        <Text style={styles.topBarBrand}>FUTÉ / LIVE CONCEPT</Text>
+      </View>
+      <Text style={styles.topBarRight}>{label}</Text>
+    </View>
+  );
+}
+
+function Wordmark() {
+  return (
+    <Text style={styles.wordmark}>
+      FUTÉ<Text style={styles.wordmarkVersion}> 2.0</Text>
+    </Text>
+  );
+}
+
 function NavBrand({ light }: { light?: boolean }) {
   return (
     <View style={styles.nav}>
@@ -140,355 +181,483 @@ function NavBrand({ light }: { light?: boolean }) {
   );
 }
 
-function Tag({ children }: { children: string }) {
-  return <Text style={styles.tag}>{children}</Text>;
+function HomeScreen() {
+  return (
+    <ScrollView style={styles.screenScroll} contentContainerStyle={{ paddingBottom: 40 }}>
+      <TopBar label="HOME" />
+
+      {/* Hero */}
+      <ImageBackground source={require('./assets/images/hero.webp')} style={styles.hero} imageStyle={styles.heroImage}>
+        <View style={styles.heroScrim} />
+        <NavBrand />
+        <View style={styles.heroInner}>
+          <Text style={styles.eyebrow}>The Real Estate Buyer Experience Company</Text>
+          <Text style={styles.h1}>
+            ONE VISION.{'\n'}EVERY EXPERIENCE.{'\n'}
+            <Text style={styles.h1Accent}>ALIGNED.</Text>
+          </Text>
+          <Text style={styles.heroNote}>
+            Strategy, story, imagery, technology and delivery — held in one buyer experience.
+          </Text>
+        </View>
+      </ImageBackground>
+
+      {/* About / Intro */}
+      <View style={[styles.section, styles.darkSection]}>
+        <Tag>About FUTÉ</Tag>
+        <Text style={styles.h2}>A place becomes personal through life.</Text>
+        <Text style={styles.lead}>
+          We begin with the life people imagine in a place. Then connect the strategy, story, imagery and
+          technology that help them understand it.
+        </Text>
+        <View style={styles.factRow}>
+          {FACTS.map(([num, label]) => (
+            <View style={styles.fact} key={num}>
+              <Text style={styles.factNum}>{num}</Text>
+              <Text style={styles.factLabel}>{label}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
+
+      {/* Human idea */}
+      <View style={[styles.section, styles.darkSection]}>
+        <Text style={styles.smallTag}>The human idea — light / material / movement / memory</Text>
+        <Text style={styles.h2}>
+          A place becomes personal through <Text style={{ color: RED }}>life.</Text>
+        </Text>
+        <Text style={styles.lead}>
+          We begin with the life people imagine in a place. Then connect the strategy, story, imagery and
+          technology that help them understand it.
+        </Text>
+        <Text style={styles.leadStrong}>Every vision, story and sales experience — aligned around the buyer.</Text>
+      </View>
+
+      {/* Future triad */}
+      <View style={[styles.section, styles.darkSection]}>
+        <Tag>One approved vision / three dimensions</Tag>
+        <Text style={styles.h2}>
+          Story. Imagery. <Text style={{ color: RED }}>Technology.</Text>
+        </Text>
+        <Text style={styles.lead}>
+          Give the project human meaning. Make the place tangible through craft. Make project information
+          explorable.
+        </Text>
+        <View style={styles.triadRow}>
+          {TRIAD.map(([label, title, bg, fg]) => (
+            <View style={[styles.triadCell, { backgroundColor: bg }]} key={label}>
+              <Text style={[styles.triadLabel, { color: fg }]}>{label}</Text>
+              <Text style={[styles.triadTitle, { color: fg }]}>{title}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
+
+      {/* Market pulse */}
+      <View style={[styles.marketPulse, styles.darkSection]}>
+        {MARKETS.map((m) => (
+          <Text style={styles.marketItem} key={m}>{m}</Text>
+        ))}
+        <Text style={styles.marketBig}>Local stories. Global standard.</Text>
+      </View>
+
+      {/* Capabilities */}
+      <View style={[styles.section, styles.darkSection]}>
+        <Text style={styles.h2}>One architecture.{'\n'}Five public pillars.</Text>
+        <Text style={styles.lead}>Every capability has a role in the buyer journey.</Text>
+        {CAPABILITIES.map(([number, title, copy]) => (
+          <View style={styles.row} key={number}>
+            <Text style={styles.rowNumber}>{number}</Text>
+            <View style={styles.rowBody}>
+              <Text style={styles.rowTitle}>{title}</Text>
+              <Text style={styles.rowCopy}>{copy}</Text>
+            </View>
+            <Text style={styles.rowArrow}>↗</Text>
+          </View>
+        ))}
+      </View>
+
+      {/* Work */}
+      <View style={[styles.section, styles.paperSection]}>
+        <Text style={[styles.h2, styles.inkText]}>The work{'\n'}in experience.</Text>
+        <Text style={[styles.lead, styles.smokeText]}>Selected visual narratives</Text>
+        {WORK.map((item) => (
+          <ImageBackground key={item.title} source={item.image} style={styles.card} imageStyle={styles.cardImage}>
+            <View style={styles.cardScrim} />
+            <Text style={styles.cardLabel}>{item.label}</Text>
+            <Text style={styles.cardTitle}>{item.title}</Text>
+            {item.small ? <Text style={styles.cardSmall}>{item.small}</Text> : null}
+          </ImageBackground>
+        ))}
+      </View>
+
+      {/* Film reel */}
+      <View style={[styles.section, styles.darkSection]}>
+        <Tag>FUTÉ moving image / concept previews</Tag>
+        <Text style={styles.h2}>The feeling{'\n'}before the frame.</Text>
+        <Text style={styles.lead}>
+          A few film directions that put a person, not a property, at the centre of the experience.
+        </Text>
+        {FILMS.map((film) => (
+          <ImageBackground key={film.meta} source={film.image} style={styles.filmCard} imageStyle={styles.cardImage}>
+            <View style={styles.cardScrim} />
+            <Text style={styles.filmMeta}>Film placeholder / 00:15 · {film.meta}</Text>
+            <Text style={styles.filmTitle}>{film.title}</Text>
+            <Text style={styles.filmCopy}>{film.copy}</Text>
+          </ImageBackground>
+        ))}
+        <Text style={styles.smallNote}>
+          Concept placeholders only — final character, locations, rights and production status require approval.
+        </Text>
+      </View>
+
+      {/* Buyer signal */}
+      <View style={[styles.section, styles.redSection]}>
+        <Tag>Start with the next buyer question</Tag>
+        <Text style={[styles.h2, { color: PAPER }]}>What should your buyer understand, feel and explore?</Text>
+        <Text style={[styles.lead, { color: PAPER }]}>
+          Start with the question your buyers find hardest to understand: the location, the lifestyle, the plan
+          or the choice between options.
+        </Text>
+        <View style={styles.wheelRow}>
+          {WHEEL.map((w) => (
+            <View style={styles.wheelChip} key={w}>
+              <Text style={styles.wheelChipText}>{w}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
+
+      {/* Experience */}
+      <View style={[styles.section, styles.darkSection]}>
+        <Tag>Connected buyer journey</Tag>
+        <Text style={styles.h2}>Six buyer questions.{'\n'}One coherent experience.</Text>
+        {JOURNEY.map(([num, label]) => (
+          <View style={styles.journeyRow} key={num}>
+            <Text style={styles.rowNumber}>{num}</Text>
+            <Text style={styles.journeyLabel}>{label}</Text>
+          </View>
+        ))}
+        <Text style={styles.smallNote}>Location · spaces · options · next step</Text>
+      </View>
+
+      {/* Lifecycle */}
+      <View style={[styles.section, styles.paperSection]}>
+        <Text style={styles.tag}>Buyer story system / lifestyle film</Text>
+        <Text style={[styles.h2, styles.inkText]}>Life, in every frame.</Text>
+        <Text style={[styles.lead, styles.smokeText]}>
+          A lifestyle film begins with a character, then follows the moments where architecture becomes part of
+          that person's day.
+        </Text>
+        {BEATS.map(([time, title, copy]) => (
+          <View style={styles.beat} key={title}>
+            <Text style={styles.beatTime}>{time}</Text>
+            <Text style={styles.rowTitleInk}>{title}</Text>
+            <Text style={styles.beatCopy}>{copy}</Text>
+          </View>
+        ))}
+      </View>
+
+      {/* AI section */}
+      <View style={[styles.section, styles.darkSection]}>
+        <Tag>AI-supported creative production</Tag>
+        <Text style={styles.h2}>The character gives us someone to follow.</Text>
+        <Text style={styles.lead}>
+          AI supports character creation and creative production. The buyer remains the point of view.
+        </Text>
+        <Text style={styles.smallNote}>
+          Character / wardrobe / light / camera / continuity{'\n'}Approve the story before you make the frame.
+        </Text>
+        <ImageBackground source={require('./assets/images/ai-arrival.webp')} style={styles.aiImage} imageStyle={styles.cardImage}>
+          <View style={styles.cardScrim} />
+          <Text style={styles.filmMeta}>Conceptual visual reference / supplied image library</Text>
+        </ImageBackground>
+      </View>
+
+      {/* Systems */}
+      <View style={[styles.section, styles.paperSection]}>
+        <Text style={styles.tag}>Commercial offer</Text>
+        <Text style={[styles.h2, styles.inkText]}>Four commercial systems.</Text>
+        <Text style={[styles.lead, styles.smokeText]}>
+          Create a consistent structure across projects, markets and approved assets.
+        </Text>
+        {SYSTEMS.map(([number, title, copy]) => (
+          <View style={styles.row} key={number}>
+            <Text style={styles.rowNumber}>{number}</Text>
+            <View style={styles.rowBody}>
+              <Text style={styles.rowTitleInk}>{title}</Text>
+              <Text style={styles.beatCopy}>{copy}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+
+      {/* Delivery */}
+      <View style={[styles.section, styles.darkSection]}>
+        <Tag>One approved vision / carried through delivery</Tag>
+        <Text style={styles.h2}>How teams align.</Text>
+        <Text style={styles.lead}>
+          Leadership, design, marketing and sales. One approved project story, centred on the buyer.
+        </Text>
+        {DELIVERY.map(([number, title, copy]) => (
+          <View style={styles.row} key={number}>
+            <Text style={styles.rowNumber}>{number}</Text>
+            <View style={styles.rowBody}>
+              <Text style={styles.rowTitle}>{title}</Text>
+              <Text style={styles.rowCopy}>{copy}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+
+      {/* Voice */}
+      <View style={[styles.section, styles.paperSection]}>
+        <Text style={styles.tag}>A voice people recognise</Text>
+        <Text style={[styles.h2, styles.inkText]}>Begin with the person.</Text>
+        {VOICE.map(([title, copy]) => (
+          <View style={styles.voiceItem} key={title}>
+            <Text style={styles.rowTitleInk}>{title}</Text>
+            <Text style={styles.beatCopy}>{copy}</Text>
+          </View>
+        ))}
+      </View>
+
+      {/* Perspective */}
+      <View style={[styles.section, styles.darkSection]}>
+        <Tag>FUTÉ 2.0 / global perspective</Tag>
+        <Text style={styles.h2}>A world of different perspectives.</Text>
+        <Text style={styles.lead}>
+          A distinctly local project story, held to an international standard of experience.
+        </Text>
+        <View style={styles.marketGrid}>
+          {MARKETS.map((m) => (
+            <Text style={styles.marketGridItem} key={m}>{m}</Text>
+          ))}
+        </View>
+        <View style={styles.perspectiveLine}>
+          <Text style={styles.rowTitle}>The client and the buyer</Text>
+          <Text style={styles.rowCopy}>
+            The developer is FUTÉ's client. The property buyer is the developer's customer. Every output must
+            serve the developer's communication needs and the buyer's understanding.
+          </Text>
+        </View>
+      </View>
+
+      {/* Clients */}
+      <View style={[styles.section, styles.paperSection]}>
+        <Text style={styles.tag}>Client list</Text>
+        <Text style={[styles.h2, styles.inkText]}>Built with{'\n'}ambition.</Text>
+        <Text style={[styles.lead, styles.smokeText]}>Selected client and collaborator logos supplied by FUTÉ.</Text>
+        <Image source={require('./assets/images/clients-a.webp')} style={styles.clientLogo} resizeMode="contain" />
+        <Image source={require('./assets/images/clients-b.webp')} style={styles.clientLogo} resizeMode="contain" />
+        <Text style={[styles.smallNote, styles.collaboratorNote]}>{COLLABORATORS.join('   ·   ')}</Text>
+      </View>
+
+      {/* Case study */}
+      <View style={[styles.section, styles.redSection]}>
+        <Text style={[styles.tag, { color: INK }]}>Client testimonial</Text>
+        <Text style={[styles.h2, { color: PAPER }]}>Hiranandani Sands,{'\n'}Alibaug.</Text>
+        <Text style={styles.blockquote}>
+          "All serviced apartments at Hiranandani Sands, Alibaug has been sold out in 1 day i.e. Saturday and
+          that too in record time."
+        </Text>
+        <Text style={styles.cite}>Sumon Das</Text>
+      </View>
+
+      {/* Footer */}
+      <View style={[styles.section, styles.paperSection]}>
+        <View style={styles.footerHead}>
+          <Text style={styles.footerHeadText}>FUTÉ 2.0</Text>
+          <Text style={styles.footerHeadText}>The Real Estate Buyer Experience Company</Text>
+        </View>
+        <Image source={require('./assets/images/logo.png')} style={styles.footerLogo} resizeMode="contain" />
+        <Text style={[styles.footerH2, styles.inkText]}>
+          Start with{'\n'}your <Text style={{ color: RED }}>next question.</Text>
+        </Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => Linking.openURL('mailto:Soma@futeservices.com?subject=FUT%C3%89%202.0%20project%20enquiry')}
+        >
+          <Text style={styles.buttonText}>Discuss your project</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, styles.buttonOutline]}
+          onPress={() => Linking.openURL('https://fute-redesigned.vercel.app/documents/fute-services-2026-company-profile.pdf')}
+        >
+          <Text style={[styles.buttonText, styles.buttonOutlineText]}>Brochure</Text>
+        </TouchableOpacity>
+        <View style={styles.emails}>
+          <TouchableOpacity onPress={() => Linking.openURL('mailto:Soma@futeservices.com')}>
+            <Text style={styles.emailLink}>Soma@futeservices.com</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => Linking.openURL('mailto:Payel@futeservices.com')}>
+            <Text style={styles.emailLink}>Payel@futeservices.com</Text>
+          </TouchableOpacity>
+        </View>
+        <Text style={[styles.smallNote, styles.collaboratorNote, { marginTop: 16 }]}>
+          India / Singapore / UAE · Dubai / Australia
+        </Text>
+      </View>
+    </ScrollView>
+  );
+}
+
+function ExploreScreen() {
+  return (
+    <ScrollView style={[styles.screenScroll, styles.paperSection]} contentContainerStyle={{ paddingBottom: 40 }}>
+      <TopBar label="EXPLORE" />
+      <View style={styles.section}>
+        <Wordmark />
+        <Tag>Approved project information</Tag>
+        <Text style={[styles.h2, styles.inkText]}>Explore what matters,{'\n'}one step at a time.</Text>
+        <Text style={[styles.lead, styles.smokeText]}>
+          Move through location, spaces and options in one coherent story — the same buyer path FUTÉ designs
+          into every project.
+        </Text>
+        {JOURNEY.map(([num, label]) => (
+          <View style={styles.exploreRow} key={num}>
+            <Text style={styles.rowNumber}>{num}</Text>
+            <Text style={styles.rowTitleInk}>{label}</Text>
+          </View>
+        ))}
+        <Text style={[styles.tag, { marginTop: 8 }]}>Five public pillars</Text>
+        {CAPABILITIES.map(([number, title, copy]) => (
+          <View style={styles.exploreCard} key={number}>
+            <Text style={styles.rowNumber}>{number}</Text>
+            <View style={styles.rowBody}>
+              <Text style={styles.rowTitleInk}>{title}</Text>
+              <Text style={styles.beatCopy}>{copy}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    </ScrollView>
+  );
+}
+
+function AgentScreen() {
+  const [answer, setAnswer] = useState(AGENT_ANSWERS.location);
+  const [question, setQuestion] = useState('');
+  const [asked, setAsked] = useState('');
+
+  return (
+    <ScrollView style={[styles.screenScroll, styles.paperSection]} contentContainerStyle={{ paddingBottom: 40 }}>
+      <TopBar label="AI / CONCEPT" />
+      <View style={styles.section}>
+        <Wordmark />
+        <Tag>Your guided buyer experience</Tag>
+        <Text style={[styles.h2, styles.inkText]}>
+          Your next{'\n'}buyer <Text style={{ color: RED }}>question.</Text>
+        </Text>
+
+        <View style={styles.agentGlass}>
+          <View style={styles.agentOrb} />
+          <Text style={styles.agentGlassTitle}>Begin with{'\n'}what matters.</Text>
+          <Text style={styles.agentGlassNote}>A future-ready interface for approved project information.</Text>
+        </View>
+
+        <View style={styles.askRow}>
+          <TextInput
+            style={styles.askInput}
+            placeholder="Ask about the place"
+            placeholderTextColor="#8a8378"
+            value={question}
+            onChangeText={setQuestion}
+          />
+          <TouchableOpacity
+            style={styles.askButton}
+            onPress={() => {
+              if (!question.trim()) return;
+              setAsked(question.trim());
+              setAnswer(
+                'A future-ready interface for approved project information will answer this once connected.',
+              );
+              setQuestion('');
+            }}
+          >
+            <Text style={styles.askButtonText}>Ask</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.chipRow}>
+          {AGENT_CHOICES.map(([key, label]) => (
+            <TouchableOpacity
+              key={key}
+              style={styles.agentChip}
+              onPress={() => {
+                setAsked('');
+                setAnswer(AGENT_ANSWERS[key]);
+              }}
+            >
+              <Text style={styles.agentChipText}>{label}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        <View style={styles.agentResponse}>
+          <Text style={styles.tag}>FUTÉ agent</Text>
+          {asked ? <Text style={styles.agentAsked}>"{asked}"</Text> : null}
+          <Text style={styles.agentAnswer}>{answer}</Text>
+        </View>
+
+        <Text style={styles.smallNote}>
+          AI-guided interface / concept{'\n'}Functions, data rules and production status require project
+          approval.
+        </Text>
+      </View>
+    </ScrollView>
+  );
+}
+
+const SCREENS: Record<Tab, () => React.JSX.Element> = {
+  Home: HomeScreen,
+  Explore: ExploreScreen,
+  Agent: AgentScreen,
+};
+
+function TabIcon({ tab, active }: { tab: Tab; active: boolean }) {
+  const color = active ? RED : '#9a9186';
+  if (tab === 'Home') return <Text style={[styles.tabGlyph, { color }]}>⌂</Text>;
+  if (tab === 'Explore') return <View style={[styles.exploreIcon, { borderColor: color }]} />;
+  return <View style={[styles.agentIcon, { backgroundColor: color }]} />;
 }
 
 export default function App() {
+  const [tab, setTab] = useState<Tab>('Home');
+  const Screen = SCREENS[tab];
+
   return (
     <SafeAreaView style={styles.app}>
-      <StatusBar barStyle="light-content" backgroundColor={INK} />
-      <ScrollView style={styles.appScroll} contentContainerStyle={{ paddingBottom: 48 }}>
-        {/* Hero */}
-        <ImageBackground
-          source={require('./assets/images/hero.webp')}
-          style={styles.hero}
-          imageStyle={styles.heroImage}
-        >
-          <View style={styles.heroScrim} />
-          <NavBrand />
-          <View style={styles.heroInner}>
-            <Text style={styles.eyebrow}>The Real Estate Buyer Experience Company</Text>
-            <Text style={styles.h1}>
-              ONE VISION.{'\n'}EVERY EXPERIENCE.{'\n'}
-              <Text style={styles.h1Accent}>ALIGNED.</Text>
-            </Text>
-            <Text style={styles.heroNote}>
-              Strategy, story, imagery, technology and delivery — held in one buyer experience.
-            </Text>
-          </View>
-        </ImageBackground>
-
-        {/* About / Intro */}
-        <View style={[styles.section, styles.darkSection]}>
-          <Tag>About FUTÉ</Tag>
-          <Text style={styles.h2}>A place becomes personal through life.</Text>
-          <Text style={styles.lead}>
-            We begin with the life people imagine in a place. Then connect the strategy, story, imagery and
-            technology that help them understand it.
-          </Text>
-          <View style={styles.factRow}>
-            {FACTS.map(([num, label]) => (
-              <View style={styles.fact} key={num}>
-                <Text style={styles.factNum}>{num}</Text>
-                <Text style={styles.factLabel}>{label}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
-
-        {/* Human idea */}
-        <View style={[styles.section, styles.darkSection]}>
-          <Text style={styles.smallTag}>The human idea — light / material / movement / memory</Text>
-          <Text style={styles.h2}>
-            A place becomes personal through <Text style={{ color: RED }}>life.</Text>
-          </Text>
-          <Text style={styles.lead}>
-            We begin with the life people imagine in a place. Then connect the strategy, story, imagery and
-            technology that help them understand it.
-          </Text>
-          <Text style={[styles.lead, { color: PAPER, fontWeight: '700', fontFamily: undefined }]}>
-            Every vision, story and sales experience — aligned around the buyer.
-          </Text>
-        </View>
-
-        {/* Future triad */}
-        <View style={[styles.section, styles.darkSection]}>
-          <Tag>One approved vision / three dimensions</Tag>
-          <Text style={styles.h2}>
-            Story. Imagery. <Text style={{ color: RED }}>Technology.</Text>
-          </Text>
-          <Text style={styles.lead}>
-            Give the project human meaning. Make the place tangible through craft. Make project information
-            explorable.
-          </Text>
-          <View style={styles.triadRow}>
-            {TRIAD.map(([label, title, bg, fg]) => (
-              <View style={[styles.triadCell, { backgroundColor: bg }]} key={label}>
-                <Text style={[styles.triadLabel, { color: fg }]}>{label}</Text>
-                <Text style={[styles.triadTitle, { color: fg }]}>{title}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
-
-        {/* Market pulse */}
-        <View style={[styles.marketPulse, styles.darkSection]}>
-          {MARKETS.map((m) => (
-            <Text style={styles.marketItem} key={m}>{m}</Text>
-          ))}
-          <Text style={styles.marketBig}>Local stories. Global standard.</Text>
-        </View>
-
-        {/* Capabilities */}
-        <View style={[styles.section, styles.darkSection]}>
-          <Text style={styles.h2}>One architecture.{'\n'}Five public pillars.</Text>
-          <Text style={styles.lead}>Every capability has a role in the buyer journey.</Text>
-          {CAPABILITIES.map(([number, title, copy]) => (
-            <View style={styles.row} key={number}>
-              <Text style={styles.rowNumber}>{number}</Text>
-              <View style={styles.rowBody}>
-                <Text style={styles.rowTitle}>{title}</Text>
-                <Text style={styles.rowCopy}>{copy}</Text>
-              </View>
-              <Text style={styles.rowArrow}>↗</Text>
-            </View>
-          ))}
-        </View>
-
-        {/* Work */}
-        <View style={[styles.section, styles.paperSection]}>
-          <Text style={[styles.h2, styles.inkText]}>The work{'\n'}in experience.</Text>
-          <Text style={[styles.lead, styles.smokeText]}>Selected visual narratives</Text>
-          {WORK.map((item) => (
-            <ImageBackground key={item.title} source={item.image} style={styles.card} imageStyle={styles.cardImage}>
-              <View style={styles.cardScrim} />
-              <Text style={styles.cardLabel}>{item.label}</Text>
-              <Text style={styles.cardTitle}>{item.title}</Text>
-              {item.small ? <Text style={styles.cardSmall}>{item.small}</Text> : null}
-            </ImageBackground>
-          ))}
-        </View>
-
-        {/* Film reel */}
-        <View style={[styles.section, styles.darkSection]}>
-          <Tag>FUTÉ moving image / concept previews</Tag>
-          <Text style={styles.h2}>The feeling{'\n'}before the frame.</Text>
-          <Text style={styles.lead}>
-            A few film directions that put a person, not a property, at the centre of the experience.
-          </Text>
-          {FILMS.map((film) => (
-            <ImageBackground key={film.meta} source={film.image} style={styles.filmCard} imageStyle={styles.cardImage}>
-              <View style={styles.cardScrim} />
-              <Text style={styles.filmMeta}>Film placeholder / 00:15 · {film.meta}</Text>
-              <Text style={styles.filmTitle}>{film.title}</Text>
-              <Text style={styles.filmCopy}>{film.copy}</Text>
-            </ImageBackground>
-          ))}
-          <Text style={styles.smallNote}>
-            Concept placeholders only — final character, locations, rights and production status require approval.
-          </Text>
-        </View>
-
-        {/* Buyer signal */}
-        <View style={[styles.section, styles.redSection]}>
-          <Tag>Start with the next buyer question</Tag>
-          <Text style={[styles.h2, { color: PAPER }]}>
-            What should your buyer understand, feel and explore?
-          </Text>
-          <Text style={[styles.lead, { color: PAPER }]}>
-            Start with the question your buyers find hardest to understand: the location, the lifestyle, the plan
-            or the choice between options.
-          </Text>
-          <View style={styles.wheelRow}>
-            {WHEEL.map((w) => (
-              <View style={styles.wheelChip} key={w}>
-                <Text style={styles.wheelChipText}>{w}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
-
-        {/* Experience */}
-        <View style={[styles.section, styles.darkSection]}>
-          <Tag>Connected buyer journey</Tag>
-          <Text style={styles.h2}>Six buyer questions.{'\n'}One coherent experience.</Text>
-          {JOURNEY.map(([num, label]) => (
-            <View style={styles.journeyRow} key={num}>
-              <Text style={styles.rowNumber}>{num}</Text>
-              <Text style={styles.journeyLabel}>{label}</Text>
-            </View>
-          ))}
-          <Text style={styles.smallNote}>Location · spaces · options · next step</Text>
-        </View>
-
-        {/* Lifecycle */}
-        <View style={[styles.section, styles.paperSection]}>
-          <Text style={[styles.tag]}>Buyer story system / lifestyle film</Text>
-          <Text style={[styles.h2, styles.inkText]}>Life, in every frame.</Text>
-          <Text style={[styles.lead, styles.smokeText]}>
-            A lifestyle film begins with a character, then follows the moments where architecture becomes part of
-            that person's day.
-          </Text>
-          {BEATS.map(([time, title, copy]) => (
-            <View style={styles.beat} key={title}>
-              <Text style={styles.beatTime}>{time}</Text>
-              <Text style={styles.rowTitleInk}>{title}</Text>
-              <Text style={styles.beatCopy}>{copy}</Text>
-            </View>
-          ))}
-        </View>
-
-        {/* AI section */}
-        <View style={[styles.section, styles.darkSection]}>
-          <Tag>AI-supported creative production</Tag>
-          <Text style={styles.h2}>The character gives us someone to follow.</Text>
-          <Text style={styles.lead}>
-            AI supports character creation and creative production. The buyer remains the point of view.
-          </Text>
-          <Text style={styles.smallNote}>
-            Character / wardrobe / light / camera / continuity{'\n'}Approve the story before you make the frame.
-          </Text>
-          <ImageBackground
-            source={require('./assets/images/ai-arrival.webp')}
-            style={styles.aiImage}
-            imageStyle={styles.cardImage}
-          >
-            <View style={styles.cardScrim} />
-            <Text style={styles.filmMeta}>Conceptual visual reference / supplied image library</Text>
-          </ImageBackground>
-        </View>
-
-        {/* Systems */}
-        <View style={[styles.section, styles.paperSection]}>
-          <Text style={[styles.tag]}>Commercial offer</Text>
-          <Text style={[styles.h2, styles.inkText]}>Four commercial systems.</Text>
-          <Text style={[styles.lead, styles.smokeText]}>
-            Create a consistent structure across projects, markets and approved assets.
-          </Text>
-          {SYSTEMS.map(([number, title, copy]) => (
-            <View style={styles.row} key={number}>
-              <Text style={styles.rowNumber}>{number}</Text>
-              <View style={styles.rowBody}>
-                <Text style={styles.rowTitleInk}>{title}</Text>
-                <Text style={styles.beatCopy}>{copy}</Text>
-              </View>
-            </View>
-          ))}
-        </View>
-
-        {/* Delivery */}
-        <View style={[styles.section, styles.darkSection]}>
-          <Tag>One approved vision / carried through delivery</Tag>
-          <Text style={styles.h2}>How teams align.</Text>
-          <Text style={styles.lead}>
-            Leadership, design, marketing and sales. One approved project story, centred on the buyer.
-          </Text>
-          {DELIVERY.map(([number, title, copy]) => (
-            <View style={styles.row} key={number}>
-              <Text style={styles.rowNumber}>{number}</Text>
-              <View style={styles.rowBody}>
-                <Text style={styles.rowTitle}>{title}</Text>
-                <Text style={styles.rowCopy}>{copy}</Text>
-              </View>
-            </View>
-          ))}
-        </View>
-
-        {/* Voice */}
-        <View style={[styles.section, styles.paperSection]}>
-          <Text style={[styles.tag]}>A voice people recognise</Text>
-          <Text style={[styles.h2, styles.inkText]}>Begin with the person.</Text>
-          {VOICE.map(([title, copy]) => (
-            <View style={styles.voiceItem} key={title}>
-              <Text style={styles.rowTitleInk}>{title}</Text>
-              <Text style={styles.beatCopy}>{copy}</Text>
-            </View>
-          ))}
-        </View>
-
-        {/* Perspective */}
-        <View style={[styles.section, styles.darkSection]}>
-          <Tag>FUTÉ 2.0 / global perspective</Tag>
-          <Text style={styles.h2}>A world of different perspectives.</Text>
-          <Text style={styles.lead}>
-            A distinctly local project story, held to an international standard of experience.
-          </Text>
-          <View style={styles.marketGrid}>
-            {MARKETS.map((m) => (
-              <Text style={styles.marketGridItem} key={m}>{m}</Text>
-            ))}
-          </View>
-          <View style={styles.perspectiveLine}>
-            <Text style={styles.rowTitle}>The client and the buyer</Text>
-            <Text style={styles.rowCopy}>
-              The developer is FUTÉ's client. The property buyer is the developer's customer. Every output must
-              serve the developer's communication needs and the buyer's understanding.
-            </Text>
-          </View>
-        </View>
-
-        {/* Clients */}
-        <View style={[styles.section, styles.paperSection]}>
-          <Text style={[styles.tag]}>Client list</Text>
-          <Text style={[styles.h2, styles.inkText]}>Built with{'\n'}ambition.</Text>
-          <Text style={[styles.lead, styles.smokeText]}>Selected client and collaborator logos supplied by FUTÉ.</Text>
-          <Image source={require('./assets/images/clients-a.webp')} style={styles.clientLogo} resizeMode="contain" />
-          <Image source={require('./assets/images/clients-b.webp')} style={styles.clientLogo} resizeMode="contain" />
-          <Text style={[styles.smallNote, { color: '#706a62', textAlign: 'left' }]}>
-            {COLLABORATORS.join('   ·   ')}
-          </Text>
-        </View>
-
-        {/* Case study */}
-        <View style={[styles.section, styles.redSection]}>
-          <Text style={[styles.tag, { color: INK }]}>Client testimonial</Text>
-          <Text style={[styles.h2, { color: PAPER }]}>Hiranandani Sands,{'\n'}Alibaug.</Text>
-          <Text style={styles.blockquote}>
-            "All serviced apartments at Hiranandani Sands, Alibaug has been sold out in 1 day i.e. Saturday and
-            that too in record time."
-          </Text>
-          <Text style={styles.cite}>Sumon Das</Text>
-        </View>
-
-        {/* Footer */}
-        <View style={[styles.section, styles.paperSection]}>
-          <View style={styles.footerHead}>
-            <Text style={styles.footerHeadText}>FUTÉ 2.0</Text>
-            <Text style={styles.footerHeadText}>The Real Estate Buyer Experience Company</Text>
-          </View>
-          <Image source={require('./assets/images/logo.png')} style={styles.footerLogo} resizeMode="contain" />
-          <Text style={[styles.footerH2, styles.inkText]}>
-            Start with{'\n'}your <Text style={{ color: RED }}>next question.</Text>
-          </Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              Linking.openURL('mailto:Soma@futeservices.com?subject=FUT%C3%89%202.0%20project%20enquiry')
-            }
-          >
-            <Text style={styles.buttonText}>Discuss your project</Text>
+      <StatusBar barStyle="dark-content" backgroundColor={PAPER} />
+      <Screen />
+      <View style={styles.tabBar}>
+        {TABS.map((t) => (
+          <TouchableOpacity key={t} style={styles.tabButton} onPress={() => setTab(t)}>
+            <TabIcon tab={t} active={tab === t} />
+            <Text style={[styles.tabLabel, tab === t && styles.tabLabelActive]}>{t}</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, styles.buttonOutline]}
-            onPress={() => Linking.openURL('https://fute-redesigned.vercel.app/documents/fute-services-2026-company-profile.pdf')}
-          >
-            <Text style={[styles.buttonText, styles.buttonOutlineText]}>Brochure</Text>
-          </TouchableOpacity>
-          <View style={styles.emails}>
-            <TouchableOpacity onPress={() => Linking.openURL('mailto:Soma@futeservices.com')}>
-              <Text style={styles.emailLink}>Soma@futeservices.com</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => Linking.openURL('mailto:Payel@futeservices.com')}>
-              <Text style={styles.emailLink}>Payel@futeservices.com</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={[styles.smallNote, { color: '#706a62', marginTop: 16 }]}>
-            India / Singapore / UAE · Dubai / Australia
-          </Text>
-        </View>
-      </ScrollView>
+        ))}
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  app: { flex: 1, backgroundColor: INK },
-  appScroll: { flex: 1 },
+  app: { flex: 1, backgroundColor: PAPER },
+  screenScroll: { flex: 1, backgroundColor: INK },
   darkSection: { backgroundColor: INK },
   paperSection: { backgroundColor: PAPER },
   redSection: { backgroundColor: RED },
   section: { padding: 24, gap: 16 },
+
+  topBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 24, paddingTop: 8, paddingBottom: 10, backgroundColor: PAPER },
+  topBarLeft: { flexDirection: 'row', alignItems: 'center', gap: 7 },
+  topBarDot: { width: 7, height: 7, borderRadius: 4, backgroundColor: RED },
+  topBarBrand: { color: INK, fontSize: 10, fontWeight: '700', letterSpacing: 0.8 },
+  topBarRight: { color: '#8a8378', fontSize: 10, fontWeight: '700', letterSpacing: 1 },
+
+  wordmark: { fontFamily: SERIF, color: INK, fontSize: 26, fontWeight: '700', letterSpacing: -0.5 },
+  wordmarkVersion: { color: RED, fontSize: 12, fontWeight: '700' },
 
   nav: { paddingHorizontal: 24, paddingTop: 12, paddingBottom: 4 },
   navChip: { alignSelf: 'flex-start', backgroundColor: PAPER, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 3 },
@@ -514,7 +683,9 @@ const styles = StyleSheet.create({
   inkText: { color: INK },
   smokeText: { color: '#706a62' },
   lead: { color: SMOKE, fontSize: 15, lineHeight: 21, fontFamily: SERIF },
+  leadStrong: { color: PAPER, fontSize: 15, lineHeight: 21, fontWeight: '700' },
   smallNote: { color: SAND, fontSize: 10, fontWeight: '700', letterSpacing: 1, lineHeight: 16, textAlign: 'left' },
+  collaboratorNote: { color: '#706a62' },
 
   triadRow: { gap: 10 },
   triadCell: { padding: 18, borderRadius: 2, minHeight: 100, justifyContent: 'space-between' },
@@ -579,4 +750,33 @@ const styles = StyleSheet.create({
   buttonOutlineText: { color: INK },
   emails: { gap: 6, marginTop: 20 },
   emailLink: { color: INK, fontSize: 16, fontFamily: SERIF },
+
+  exploreRow: { flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: '#bcb4a9' },
+  exploreCard: { flexDirection: 'row', gap: 14, paddingVertical: 16, borderBottomWidth: 1, borderBottomColor: '#bcb4a9' },
+
+  agentGlass: { backgroundColor: INK, borderRadius: 10, padding: 22, minHeight: 260, justifyContent: 'flex-end', gap: 10, overflow: 'hidden' },
+  agentOrb: { position: 'absolute', top: 22, left: 22, width: 44, height: 44, borderRadius: 22, backgroundColor: RED, opacity: 0.9 },
+  agentGlassTitle: { fontFamily: SERIF, color: PAPER, fontSize: 30, lineHeight: 32 },
+  agentGlassNote: { color: SAND, fontSize: 13, lineHeight: 18, maxWidth: 260 },
+
+  askRow: { flexDirection: 'row', gap: 8 },
+  askInput: { flex: 1, borderWidth: 1, borderColor: '#bcb4a9', backgroundColor: PAPER, paddingHorizontal: 14, paddingVertical: 12, color: INK, fontSize: 14 },
+  askButton: { backgroundColor: RED, paddingHorizontal: 20, justifyContent: 'center', alignItems: 'center' },
+  askButtonText: { color: PAPER, fontSize: 11, fontWeight: '700', letterSpacing: 1, textTransform: 'uppercase' },
+
+  chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  agentChip: { borderWidth: 1, borderColor: '#bcb4a9', paddingHorizontal: 14, paddingVertical: 10 },
+  agentChipText: { color: RED, fontSize: 10, fontWeight: '700', letterSpacing: 1, textTransform: 'uppercase' },
+
+  agentResponse: { borderWidth: 1, borderColor: '#bcb4a9', padding: 16, gap: 8, minHeight: 90 },
+  agentAsked: { fontFamily: SERIF, color: '#706a62', fontSize: 14, fontStyle: 'italic' },
+  agentAnswer: { fontFamily: SERIF, color: INK, fontSize: 17, lineHeight: 22 },
+
+  tabBar: { flexDirection: 'row', borderTopWidth: 1, borderTopColor: '#d8d1c6', backgroundColor: PAPER },
+  tabButton: { flex: 1, paddingVertical: 12, alignItems: 'center', gap: 4 },
+  tabGlyph: { fontSize: 20 },
+  exploreIcon: { width: 20, height: 20, borderRadius: 10, borderWidth: 1.5, borderStyle: 'dashed' },
+  agentIcon: { width: 12, height: 12, borderRadius: 6 },
+  tabLabel: { color: '#9a9186', fontSize: 10, fontWeight: '700', letterSpacing: 1, textTransform: 'uppercase' },
+  tabLabelActive: { color: RED },
 });
