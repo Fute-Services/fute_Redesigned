@@ -12,12 +12,11 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "backgroundColor": "#f1eee8",
+        "foregroundImage": "./assets/icon.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.int8.fute.fute20"
     },
     "web": {
       "favicon": "./assets/favicon.png"
