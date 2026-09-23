@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Image,
   ImageBackground,
@@ -44,9 +43,6 @@ const WORK = [
   },
 ];
 
-const TABS = ['Home', 'Capabilities', 'Work', 'Contact'] as const;
-type Tab = (typeof TABS)[number];
-
 function NavBrand({ light }: { light?: boolean }) {
   return (
     <View style={styles.nav}>
@@ -57,149 +53,111 @@ function NavBrand({ light }: { light?: boolean }) {
   );
 }
 
-function HomeScreen() {
-  return (
-    <ScrollView style={styles.screenScroll} contentContainerStyle={{ paddingBottom: 40 }}>
-      <ImageBackground
-        source={require('./assets/images/hero.webp')}
-        style={styles.hero}
-        imageStyle={styles.heroImage}
-      >
-        <View style={styles.heroScrim} />
-        <NavBrand />
-        <View style={styles.heroInner}>
-          <Text style={styles.eyebrow}>The Real Estate Buyer Experience Company</Text>
-          <Text style={styles.h1}>
-            ONE VISION.{'\n'}EVERY EXPERIENCE.{'\n'}
-            <Text style={styles.h1Accent}>ALIGNED.</Text>
-          </Text>
-          <Text style={styles.heroNote}>
-            Strategy, story, imagery, technology and delivery — held in one buyer experience.
-          </Text>
-        </View>
-      </ImageBackground>
-
-      <View style={styles.factRow}>
-        <View style={styles.fact}>
-          <Text style={styles.factNum}>17</Text>
-          <Text style={styles.factLabel}>Years</Text>
-        </View>
-        <View style={styles.fact}>
-          <Text style={styles.factNum}>India</Text>
-          <Text style={styles.factLabel}>Home market</Text>
-        </View>
-        <View style={styles.fact}>
-          <Text style={styles.factNum}>Singapore · UAE</Text>
-          <Text style={styles.factLabel}>Regional reach</Text>
-        </View>
-        <View style={styles.fact}>
-          <Text style={styles.factNum}>Australia</Text>
-          <Text style={styles.factLabel}>Global reach</Text>
-        </View>
-      </View>
-    </ScrollView>
-  );
-}
-
-function CapabilitiesScreen() {
-  return (
-    <ScrollView style={styles.screenDark} contentContainerStyle={styles.screen}>
-      <NavBrand />
-      <Text style={styles.tag}>About FUTÉ</Text>
-      <Text style={styles.h2}>One architecture.{'\n'}Five public pillars.</Text>
-      <Text style={styles.lead}>Every capability has a role in the buyer journey.</Text>
-      {CAPABILITIES.map(([number, title, copy]) => (
-        <View style={styles.row} key={number}>
-          <Text style={styles.rowNumber}>{number}</Text>
-          <View style={styles.rowBody}>
-            <Text style={styles.rowTitle}>{title}</Text>
-            <Text style={styles.rowCopy}>{copy}</Text>
-          </View>
-          <Text style={styles.rowArrow}>↗</Text>
-        </View>
-      ))}
-    </ScrollView>
-  );
-}
-
-function WorkScreen() {
-  return (
-    <ScrollView style={styles.screenPaper} contentContainerStyle={styles.screen}>
-      <NavBrand light />
-      <Text style={[styles.h2, styles.inkText]}>The work{'\n'}in experience.</Text>
-      <Text style={[styles.lead, styles.smokeText]}>Selected visual narratives</Text>
-      {WORK.map((item) => (
-        <ImageBackground key={item.title} source={item.image} style={styles.card} imageStyle={styles.cardImage}>
-          <View style={styles.cardScrim} />
-          <Text style={styles.cardLabel}>{item.label}</Text>
-          <Text style={styles.cardTitle}>{item.title}</Text>
-        </ImageBackground>
-      ))}
-    </ScrollView>
-  );
-}
-
-function ContactScreen() {
-  return (
-    <ScrollView style={styles.screenPaper} contentContainerStyle={styles.screen}>
-      <NavBrand light />
-      <Text style={[styles.footerH2, styles.inkText]}>
-        Let's{'\n'}<Text style={{ color: RED }}>align.</Text>
-      </Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() =>
-          Linking.openURL(
-            'mailto:Soma@futeservices.com?subject=FUT%C3%89%202.0%20project%20enquiry',
-          )
-        }
-      >
-        <Text style={styles.buttonText}>Start a project</Text>
-      </TouchableOpacity>
-      <View style={styles.emails}>
-        <TouchableOpacity onPress={() => Linking.openURL('mailto:Soma@futeservices.com')}>
-          <Text style={styles.emailLink}>Soma@futeservices.com</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => Linking.openURL('mailto:Payel@futeservices.com')}>
-          <Text style={styles.emailLink}>Payel@futeservices.com</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
-  );
-}
-
-const SCREENS: Record<Tab, () => React.JSX.Element> = {
-  Home: HomeScreen,
-  Capabilities: CapabilitiesScreen,
-  Work: WorkScreen,
-  Contact: ContactScreen,
-};
-
 export default function App() {
-  const [tab, setTab] = useState<Tab>('Home');
-  const Screen = SCREENS[tab];
-
   return (
     <SafeAreaView style={styles.app}>
       <StatusBar barStyle="light-content" backgroundColor={INK} />
-      <Screen />
-      <View style={styles.tabBar}>
-        {TABS.map((t) => (
-          <TouchableOpacity key={t} style={styles.tabButton} onPress={() => setTab(t)}>
-            <Text style={[styles.tabLabel, tab === t && styles.tabLabelActive]}>{t}</Text>
+      <ScrollView style={styles.appScroll} contentContainerStyle={{ paddingBottom: 48 }}>
+        <ImageBackground
+          source={require('./assets/images/hero.webp')}
+          style={styles.hero}
+          imageStyle={styles.heroImage}
+        >
+          <View style={styles.heroScrim} />
+          <NavBrand />
+          <View style={styles.heroInner}>
+            <Text style={styles.eyebrow}>The Real Estate Buyer Experience Company</Text>
+            <Text style={styles.h1}>
+              ONE VISION.{'\n'}EVERY EXPERIENCE.{'\n'}
+              <Text style={styles.h1Accent}>ALIGNED.</Text>
+            </Text>
+            <Text style={styles.heroNote}>
+              Strategy, story, imagery, technology and delivery — held in one buyer experience.
+            </Text>
+          </View>
+        </ImageBackground>
+
+        <View style={[styles.factRow, styles.darkSection]}>
+          <View style={styles.fact}>
+            <Text style={styles.factNum}>17</Text>
+            <Text style={styles.factLabel}>Years</Text>
+          </View>
+          <View style={styles.fact}>
+            <Text style={styles.factNum}>India</Text>
+            <Text style={styles.factLabel}>Home market</Text>
+          </View>
+          <View style={styles.fact}>
+            <Text style={styles.factNum}>Singapore · UAE</Text>
+            <Text style={styles.factLabel}>Regional reach</Text>
+          </View>
+          <View style={styles.fact}>
+            <Text style={styles.factNum}>Australia</Text>
+            <Text style={styles.factLabel}>Global reach</Text>
+          </View>
+        </View>
+
+        <View style={[styles.section, styles.darkSection]}>
+          <Text style={styles.tag}>About FUTÉ</Text>
+          <Text style={styles.h2}>One architecture.{'\n'}Five public pillars.</Text>
+          <Text style={styles.lead}>Every capability has a role in the buyer journey.</Text>
+          {CAPABILITIES.map(([number, title, copy]) => (
+            <View style={styles.row} key={number}>
+              <Text style={styles.rowNumber}>{number}</Text>
+              <View style={styles.rowBody}>
+                <Text style={styles.rowTitle}>{title}</Text>
+                <Text style={styles.rowCopy}>{copy}</Text>
+              </View>
+              <Text style={styles.rowArrow}>↗</Text>
+            </View>
+          ))}
+        </View>
+
+        <View style={[styles.section, styles.paperSection]}>
+          <Text style={[styles.h2, styles.inkText]}>The work{'\n'}in experience.</Text>
+          <Text style={[styles.lead, styles.smokeText]}>Selected visual narratives</Text>
+          {WORK.map((item) => (
+            <ImageBackground key={item.title} source={item.image} style={styles.card} imageStyle={styles.cardImage}>
+              <View style={styles.cardScrim} />
+              <Text style={styles.cardLabel}>{item.label}</Text>
+              <Text style={styles.cardTitle}>{item.title}</Text>
+            </ImageBackground>
+          ))}
+        </View>
+
+        <View style={[styles.section, styles.paperSection]}>
+          <Text style={[styles.footerH2, styles.inkText]}>
+            Let's{'\n'}<Text style={{ color: RED }}>align.</Text>
+          </Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() =>
+              Linking.openURL(
+                'mailto:Soma@futeservices.com?subject=FUT%C3%89%202.0%20project%20enquiry',
+              )
+            }
+          >
+            <Text style={styles.buttonText}>Start a project</Text>
           </TouchableOpacity>
-        ))}
-      </View>
+          <View style={styles.emails}>
+            <TouchableOpacity onPress={() => Linking.openURL('mailto:Soma@futeservices.com')}>
+              <Text style={styles.emailLink}>Soma@futeservices.com</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => Linking.openURL('mailto:Payel@futeservices.com')}>
+              <Text style={styles.emailLink}>Payel@futeservices.com</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   app: { flex: 1, backgroundColor: INK },
-  screenScroll: { flex: 1, backgroundColor: INK },
-  screenDark: { flex: 1, backgroundColor: INK },
-  screenPaper: { flex: 1, backgroundColor: PAPER },
-  screen: { padding: 24, paddingBottom: 40, gap: 16 },
+  appScroll: { flex: 1 },
+  darkSection: { backgroundColor: INK },
+  paperSection: { backgroundColor: PAPER },
+  section: { padding: 24, gap: 16 },
 
   nav: { paddingHorizontal: 24, paddingTop: 12, paddingBottom: 4 },
   navChip: { alignSelf: 'flex-start', backgroundColor: PAPER, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 3 },
@@ -243,9 +201,4 @@ const styles = StyleSheet.create({
   buttonText: { color: PAPER, fontSize: 11, fontWeight: '700', letterSpacing: 1.2, textTransform: 'uppercase' },
   emails: { gap: 6, marginTop: 20 },
   emailLink: { color: INK, fontSize: 16, fontFamily: SERIF },
-
-  tabBar: { flexDirection: 'row', borderTopWidth: 1, borderTopColor: '#332f2a', backgroundColor: INK },
-  tabButton: { flex: 1, paddingVertical: 14, alignItems: 'center' },
-  tabLabel: { color: '#706a62', fontSize: 10, fontWeight: '700', letterSpacing: 1, textTransform: 'uppercase' },
-  tabLabelActive: { color: RED },
 });
