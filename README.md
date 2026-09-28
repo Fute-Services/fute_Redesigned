@@ -1,43 +1,18 @@
-# FUTÉ 2.0 — Corporate Website
+# FUTÉ 2.0 corporate website
 
-Vite + React + TypeScript build of the FUTÉ 2.0 corporate website concept. A single-page
-static site — no server, no framework runtime.
+Plain HTML, CSS and JavaScript. No framework, no build step.
 
-## Run
-
-```bash
-npm install
-npm run dev        # http://localhost:5173
-npm run build      # production build → dist/
-npm run preview    # serve the production build locally
-npm run typecheck  # tsc -b
 ```
-
-## Structure
+npm run dev   # http://localhost:5173 (npx serve over public/)
+```
 
 | Path | Purpose |
 | --- | --- |
-| `index.html` | Page shell — title, description, favicon, `#root` mount |
-| `src/main.tsx` | React entry point |
-| `src/App.tsx` | Section order for the single-page site |
-| `src/globals.css` | The complete design system, ported verbatim from the concept |
-| `src/components/sections.tsx` | All static editorial sections |
-| `src/components/SiteNav.tsx` | Header with the FUTÉ logo and the scrolled/pinned state |
-| `src/components/Interactive.tsx` + `AgentStage.tsx` | Interactive decision system and the FUTÉ AI glass panel |
-| `src/components/AgentDialog.tsx` | "Ask FUTÉ" modal — choices, voice input concept, narration player |
-| `src/components/AgentProvider.tsx` | Shares the selected answer between the stage and the dialog |
-| `src/components/CompanyProfileDialog.tsx` | Footer link to the company brochure PDF |
-| `src/components/ScrollEffects.tsx` | Scroll-led reveals and the cursor aura |
-| `src/components/media.ts` | Image manifest and agent answers |
-| `public/logo.png` | FUTÉ services brand mark (nav + footer) |
-| `public/images/` | Supplied image library and the narration track, served locally |
-| `public/documents/` | Company profile brochure |
+| `public/index.html` | The whole single-page site |
+| `public/styles.css` | The complete design system |
+| `public/main.js` | Nav, scroll reveals, cursor aura, "Ask FUTÉ" dialog, voice input, narration |
+| `public/images`, `public/documents`, `public/logo.png` | Assets |
 
-`@/*` resolves to `src/*` (see `vite.config.ts` and `tsconfig.app.json`).
+Deploy `public/` on any static host (`vercel.json` already points at it).
 
-All motion is reduced-motion safe, and the layout is responsive down to 390px.
-
-## Deploy
-
-`npm run build` emits a fully static `dist/` — host it on any static host
-(Vercel, Netlify, S3, nginx). No Node runtime required.
+`mobile-app/` is the separate React Native (Expo) app and is unchanged.
