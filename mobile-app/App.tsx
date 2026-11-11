@@ -480,12 +480,6 @@ function HomeScreen() {
         >
           <Text style={styles.buttonText}>Discuss your project</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, styles.buttonOutline]}
-          onPress={() => Linking.openURL('https://fute-redesigned.vercel.app/documents/fute-services-2026-company-profile.pdf')}
-        >
-          <Text style={[styles.buttonText, styles.buttonOutlineText]}>Brochure</Text>
-        </TouchableOpacity>
         <View style={styles.emails}>
           <TouchableOpacity onPress={() => Linking.openURL('mailto:Soma@futeservices.com')}>
             <Text style={styles.emailLink}>Soma@futeservices.com</Text>
@@ -745,9 +739,7 @@ const styles = StyleSheet.create({
   footerLogo: { width: 140, height: 45, marginTop: 12 },
   footerH2: { fontFamily: SERIF, fontSize: 48, fontWeight: '400', lineHeight: 44, letterSpacing: -1.5, marginTop: 8, marginBottom: 4 },
   button: { backgroundColor: INK, paddingVertical: 17, paddingHorizontal: 20, alignItems: 'center', marginTop: 4 },
-  buttonOutline: { backgroundColor: 'transparent', borderWidth: 1, borderColor: INK },
   buttonText: { color: PAPER, fontSize: 11, fontWeight: '700', letterSpacing: 1.2, textTransform: 'uppercase' },
-  buttonOutlineText: { color: INK },
   emails: { gap: 6, marginTop: 20 },
   emailLink: { color: INK, fontSize: 16, fontFamily: SERIF },
 

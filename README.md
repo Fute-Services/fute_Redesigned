@@ -11,7 +11,7 @@ npm run dev   # http://localhost:5173 (npx serve over public/)
 | `public/index.html` | The whole single-page site |
 | `public/styles.css` | The complete design system |
 | `public/main.js` | Nav, scroll reveals, cursor aura, "Ask FUTÉ" dialog, voice input, narration |
-| `public/images`, `public/documents`, `public/logo.png` | Assets |
+| `public/images`, `public/logo.png` | Assets |
 
 Deploy `public/` on any static host (`vercel.json` already points at it).
 
